@@ -7,16 +7,27 @@ public class LexerTests
 {
     [Theory]
     [InlineData("{vinecoiec}}", 1, 2)]
-    public void GivenAString_ReturnsCorrectTokens(string input, int expectedLeftBrackets, int expectedRightBrackets)
+    public void GivenAString_ReturnsCorrectBrackets(string input, int expectedLeftBrackets, int expectedRightBrackets)
     {
-        // Arrange
-        var lexer = new JsonLexer();
-        
         // Act
-        var result = lexer.Lex(input).ToList();
+        var result = JsonLexer.Lex(input).ToList();
 
         // Assert
         Assert.Equal(expectedLeftBrackets, result.Count(r => r.TokenType == TokenType.LBRACKET));
         Assert.Equal(expectedRightBrackets, result.Count(r => r.TokenType == TokenType.RBRACKET));
+    }
+
+    [Fact]
+    public void GivenAString_DetectsColonsAndStrings()
+    {
+        // Arrange
+        var input = "{\"test\":\"test\", \"test2\":\"test2\"}";
+        
+        // Act 
+        var result = JsonLexer.Lex(input).ToList();
+        
+        // Assert
+        Assert.Equal(2, result.Count(r => r.TokenType == TokenType.COLON));
+        Assert.Equal(4, result.Count(r => r.TokenType == TokenType.STRING));
     }
 }
