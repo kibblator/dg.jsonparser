@@ -1,18 +1,7 @@
 using System.Text.RegularExpressions;
+using dg.jsonparser.Models;
 
-public class Token
-{
-    public string TokenType { get; set; }
-    public string TokenValue { get; set; }
-}
-
-public static class TokenType
-{
-    public const string COLON = "COLON";
-    public const string STRING = "STRING";
-    public const string LBRACKET = "LEFT_BRACKET";
-    public const string RBRACKET = "RIGHT_BRACKET";
-}
+namespace dg.jsonparser.Services;
 
 public static class JsonLexer
 {
@@ -21,7 +10,8 @@ public static class JsonLexer
         { TokenType.LBRACKET, @"\{" },
         { TokenType.RBRACKET, @"\}" },
         { TokenType.STRING, @"""(.*?)"""},
-        { TokenType.COLON, ":"}
+        { TokenType.COLON, ":"},
+        { TokenType.COMMA, ","}
     };
 
     public static IEnumerable<Token> Lex(string input)

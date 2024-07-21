@@ -1,4 +1,6 @@
 using System.Linq;
+using dg.jsonparser.Models;
+using dg.jsonparser.Services;
 using Xunit;
 
 namespace dg.jsonparser.tests;
@@ -29,5 +31,18 @@ public class LexerTests
         // Assert
         Assert.Equal(2, result.Count(r => r.TokenType == TokenType.COLON));
         Assert.Equal(4, result.Count(r => r.TokenType == TokenType.STRING));
+    }
+    
+    [Fact]
+    public void GivenAString_DetectsCommas()
+    {
+        // Arrange
+        var input = "{\"test\":\"test\", \"test2\":\"test2\"},,,";
+        
+        // Act 
+        var result = JsonLexer.Lex(input).ToList();
+        
+        // Assert
+        Assert.Equal(4, result.Count(r => r.TokenType == TokenType.COMMA));
     }
 }
