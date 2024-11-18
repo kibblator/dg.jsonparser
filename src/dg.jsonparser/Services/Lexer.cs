@@ -5,31 +5,16 @@ namespace dg.jsonparser.Services;
 
 public static class JsonLexer
 {
-    private static readonly Dictionary<string, string> TokenSpec = new()
+    public static IEnumerable<string> Lex(string input)
     {
-        { TokenType.LBRACKET, @"\{" },
-        { TokenType.RBRACKET, @"\}" },
-        { TokenType.STRING, @"""(.*?)"""},
-        { TokenType.COLON, ":"},
-        { TokenType.COMMA, ","}
-    };
+        /* The plan is to loop through the string and parse whilst there's still characters left.
+        Have individual methods for parsing string and number and another method for parsing bool.
+        Ignore any whitespace
+        If its just things like comma etc that are single char tokens, just add them to the list
+        Return all tokens at the end of the parser in a string array (has to be string since words are multi character
+        as are bools and integers
+        */
 
-    public static IEnumerable<Token> Lex(string input)
-    {
-        var tokenRegex = string.Join("|", TokenSpec.Select(t => $"(?<{t.Key}>{t.Value})"));
-        foreach (Match match in Regex.Matches(input, tokenRegex))
-        {
-            foreach (var key in TokenSpec.Keys)
-            {
-                if (match.Groups[key].Success)
-                {
-                    yield return new Token
-                    {
-                        TokenType = key,
-                        TokenValue = match.Value
-                    };
-                }
-            }
-        }
+        return null;
     }
 }
